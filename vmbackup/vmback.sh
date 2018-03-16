@@ -36,7 +36,7 @@ mkdir -p $sspath
 
 #Get Disk list of vm and origanal path of disk
 
-disklist=`virsh domblklist $vm | cut -d ' ' -f9 | grep var`
+disklist=`virsh domblklist $vm | grep vda | cut -d ' ' -f9`
 inid=`echo "$disklist" | cut -d '/' -f6`
 
 #create snapshot
@@ -66,7 +66,7 @@ virsh blockcommit --domain $vm --path $sspath/snap1-$vm.qcow2  --base  $disklist
 if [ $? -eq 0 ]; then
 
 #checks the path after snapshot is reverted
-pcheck=`virsh domblklist $vm | cut -d ' ' -f9 | grep var`
+pcheck=`virsh domblklist $vm | grep vda | cut -d ' ' -f9`
 
 if [ "$disklist" == "$pcheck" ]; then
 
